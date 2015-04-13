@@ -180,5 +180,21 @@
     }
   };
 
-  window.io = io;
+  // Export io for CommonJS. If being loaded as an
+  // AMD module, define it as such. Otherwise, just add 
+  // `io` to the global object
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = io
+    }
+    exports.io = io
+  } else if (typeof define === 'function' && define.amd) {
+    // Return the io as an AMD module:
+    define([], function() {
+      return io
+    })
+  } else {
+    // Declare `io` on the root (global/window) object:
+    root['io'] = io
+  }
 })();
