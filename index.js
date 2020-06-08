@@ -108,7 +108,7 @@ Socket.prototype.onMessage = function(message) {
 Socket.prototype.on = function(name, callback, context) {
   if (!callback) return this
   this._events || (this._events = {})
-  const events = this._events[name] || (this._events[name] = [])
+  var events = this._events[name] || (this._events[name] = [])
   events.push({callback: callback, context: context, ctx: context || this})
   return this
 }
@@ -118,7 +118,7 @@ Socket.prototype.on = function(name, callback, context) {
 // callbacks for the event. If `name` is null, removes all bound
 // callbacks for all events.
 Socket.prototype.off = function(name, callback, context) {
-  const retain, ev, events, names, i, l, j, k
+  var retain, ev, events, names, i, l, j, k
   if (!this._events) return this
   if (!name && !callback && !context) {
     this._events = {}
@@ -152,9 +152,9 @@ Socket.prototype.off = function(name, callback, context) {
 // receive the true name of the event as the first argument).
 Socket.prototype.trigger = function(name) {
   if (!this._events) return this
-  const args = [].slice.call(arguments, 1)
-  const events = this._events[name]
-  const allEvents = this._events.all
+  var args = [].slice.call(arguments, 1)
+  var events = this._events[name]
+  var allEvents = this._events.all
   if (events) triggerEvents(events, args)
   if (allEvents) triggerEvents(allEvents, arguments)
   return this
@@ -164,7 +164,7 @@ Socket.prototype.trigger = function(name) {
 // triggering events. Tries to keep the usual cases speedy (most internal
 // Backbone events have 3 arguments).
 const triggerEvents = function(events, args) {
-  const ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2]
+  var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2]
   switch (args.length) {
     case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return
     case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return
@@ -174,4 +174,4 @@ const triggerEvents = function(events, args) {
   }
 }
 
-export default Socket
+module.exports = Socket
